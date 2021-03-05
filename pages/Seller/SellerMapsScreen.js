@@ -6,11 +6,11 @@ import { StyleSheet } from 'react-native';
 import { Image } from 'react-native';
 import Geolocation from '@react-native-community/geolocation';
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
-import Config from "@bam.tech/react-native-config";
+import '../../global.js'
 
 
 
-class MapsScreen extends React.Component {
+class SellerMapsScreen extends React.Component {
 
 
     state = {
@@ -27,17 +27,15 @@ class MapsScreen extends React.Component {
     *
     */    
     componentDidMount(){
-      console.log( Config );
-      //
       Geolocation.getCurrentPosition( 
         info => {
           // this.setState( { coords: info.coords } );
-        },
+        },  
         null, 
         { timeout: (30*1000) }
       );
       //
-      fetch( Config.API_UR + '/api1/locations/get_all_closer_to_user.json' )
+      fetch( global.base_API + '/api1/locations/get_all_closer_to_user.json' )
         .then((response) => response.json())
         .then((json) => {
           this.setState({closerLocations: json});
@@ -63,8 +61,8 @@ class MapsScreen extends React.Component {
               region={{
                 latitude:  this.state.coords.latitude,
                 longitude: this.state.coords.longitude,
-                latitudeDelta: 0.006,
-                longitudeDelta: 0.006,
+                latitudeDelta: 0.003,
+                longitudeDelta: 0.003,
               }}
             >
               <MapView.Marker
@@ -117,9 +115,10 @@ class MapsScreen extends React.Component {
 
     }
 
+    
 };
 
-export default MapsScreen;
+export default SellerMapsScreen;
 
 const styles = StyleSheet.create({
   container: {

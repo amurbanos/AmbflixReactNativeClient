@@ -26,12 +26,14 @@ class App extends React.Component {
     userInfo: null
   }
 
+
+  
   constructor(props) {
     super(props);
-    this.getCurrentUserInfo();
   }
    
   componentDidMount(){
+    this.getCurrentUserInfo();
   }
    
   getCurrentUserInfo = async ( ) => {
@@ -50,7 +52,10 @@ class App extends React.Component {
   render(){ 
     return (
       <NavigationContainer>
-        <MyStack initialParams={{ userInfo: this.state.userInfo }} />  
+        <Stack.Navigator initialRouteName="Home">
+          { !this.state.userInfo && <Stack.Screen name="Home" component={HomeScreen} /> }
+          { this.state.userInfo && <Stack.Screen name="ClientMapsScreen" component={ClientMapsScreen} /> }
+        </Stack.Navigator>
       </NavigationContainer>
     );
  }
@@ -59,11 +64,23 @@ class App extends React.Component {
 
 export default App;
 
-function MyStack( data ) {  
+const Stack = createStackNavigator();
+
+function MyStack() {
   return (
     <Stack.Navigator>
-      { !data.userInfo && <Stack.Screen name="Home" component={HomeScreen} /> }
-      <Stack.Screen name="ClientMaps" component={ClientMapsScreen} />
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
     </Stack.Navigator>
+  );
+}
+
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
   );
 }
